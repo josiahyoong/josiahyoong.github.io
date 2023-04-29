@@ -12,14 +12,27 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
     <!-- left cluster marker css -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
-    <link rel="stylesheet" href="style.css"/>
+    <!-- <link rel="stylesheet" href="style.css"/> -->
     <title>Taxi Locations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" referrerpolicy="no-referrer" />
     
+    <style>
+      #map{
+          height:500px;
+      }
+  </style>
 </head>
 <body>
     <h1>Taxi Locations</h1>
-    <button id="trigger">My Location</button>
-    
+    <button id="trigger"class="bg-blue-500 text-white p-2 rounded-lg 
+    border border-black m-4">My Location</button>
+    <label for="text-input">Postal Code:</label>
+
+    <input type="text" id="text-input" size="6"class="border-2 border-solid border-blue-500">
+
+    <button id="submit-button" class="bg-blue-500 text-white p-2 rounded-lg 
+    border border-black m-4">GO
+</button>
     <!-- <button
     id="trigger"
     class="bg-blue-500 text-white p-2 rounded-lg 

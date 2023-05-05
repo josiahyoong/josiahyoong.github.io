@@ -30,24 +30,24 @@ async function getTaxiData() {
 }
 
 // Get user's current location and update map
-function onGetLocation(position) {
+function getMyLocation(position) {
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
-  // Define a bounding box with a 0.3km radius around user's location
-  const radius = 0.3; // in kilometers
-  const bounds = L.latLngBounds([
+  // Define a bounding box with a 0.2km radius around user's location
+  const radius1 = 0.2; // in kilometers
+  const bounds1 = L.latLngBounds([
     [
-      latitude - radius / 110.574,
-      longitude - radius / (111.32 * Math.cos((latitude * Math.PI) / 180)),
+      latitude - radius1 / 110.574,
+      longitude - radius1 / (111.32 * Math.cos((latitude * Math.PI) / 180)),
     ],
     [
-      latitude + radius / 110.574,
-      longitude + radius / (111.32 * Math.cos((latitude * Math.PI) / 180)),
+      latitude + radius1 / 110.574,
+      longitude + radius1 / (111.32 * Math.cos((latitude * Math.PI) / 180)),
     ],
   ]);
 
   // Set the view to the bounding box with the desired zoom level
-  map.fitBounds(bounds);
+  map.fitBounds(bounds1);
 
   // Show map with markers for taxi location
   L.marker([latitude, longitude])
@@ -59,7 +59,7 @@ function onGetLocation(position) {
 // Handle "Get my location" button click
 function handleGetLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(onGetLocation, (error) => {
+    navigator.geolocation.getCurrentPosition(getMyLocation, (error) => {
       console.error(`Error getting user location: ${error.message}`);
     });
   } else {
@@ -71,14 +71,17 @@ function handleGetLocation() {
 
 async function getRefresh() {
   const data = await getTaxiData();
-
   const taxiAvailabilities = data.features[0].geometry.coordinates;
-  //console.log("🚀 ~ file: index.js:26 ~ window.document.addEventListener ~ taxiAvailabilities:", taxiAvailabilities)
+
+  // Clear existing markers before adding new ones
+  markerClusterLayer.clearLayers();
+
   for (let c of taxiAvailabilities) {
     let lat = c[1];
     let lng = c[0];
     L.marker([lat, lng]).addTo(markerClusterLayer);
   }
+
   markerClusterLayer.addTo(map);
 }
 
@@ -143,8 +146,31 @@ async function getPostalCode(input) {
         .openPopup();
     })
     .catch((error) => console.error(error));
+  }
+  
+//     // Define a bounding box with a 0.2km radius around user's location
+//   const radius2 = 0.2; // in kilometers
+//   const bounds2 = L.latLngBounds([
+//     [
+//       lat - radius2 / 110.574,
+//       lon - radius2 / (111.32 * Math.cos((lat * Math.PI) / 180)),
+//     ],
+//     [
+//       lat + radius2 / 110.574,
+//       lon + radius2 / (111.32 * Math.cos((lat * Math.PI) / 180)),
+//     ],
+//   ]);
 
-}
+//     // Set the view to the bounding box with the desired zoom level
+//   map.fitBounds(bounds2);
+
+//   L.marker([lat, lon])
+//   .addTo(map)
+//   .bindPopup("Postal Code")
+//   .openPopup();
+// })
+// .catch((error) => console.error(error));  
+// }
 
 // Create a new zoom control with a custom position
 var zoomControl = L.control.zoom({ position: 'bottomright' });
